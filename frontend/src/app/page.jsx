@@ -71,24 +71,25 @@ export default function Home() {
   };
 
   const renderUploadCard = (label, icon, onFileSelect, acceptedTypes) => (
-    <div className="bg-[#00000000] border h-[15rem] shadow-md rounded-lg p-6 flex flex-col gap-[20px] w-[40%] m-auto items-center">
-      <div className="flex items-center space-x-3 mb-4 text-blue-600">
-        {icon}
-        <h3 className="text-lg font-semibold">{label}</h3>
+    <div className="bg-[#00000000] border h-[15rem] shadow-md rounded-[10px] p-6 flex flex-col gap-[20px] w-[40%] m-auto items-center justify-center hover:shadow-lg transition-shadow duration-300 relative">
+      <div className="flex items-center space-x-3 mb-4 text-blue-600 absolute w-[100%] top-[12px] bg-[#ff000000] text-center justify-center ">
+        {icon} &nbsp;&nbsp;
+        <h3 className="text-lg font-semibold ">{label}</h3>
       </div>
       <input
         type="file"
         accept={acceptedTypes}
         onChange={(e) => onFileSelect(e.target.files[0])}
-        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-[100%] h-[100%] bg-[#23456723] cursor-pointer opacity-0"
       />
+      <UploadCloud className="h-[50px] w-[50px] absolute text-[#ffffff88] " />
+
     </div>
   );
 
   return (
     <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-100 via-white to-blue-50">
-      {/* ✅ Tailwind CSS working test */}
-      
+
 
       <div className="text-center mb-12">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-400">AI-Powered Pitch Analyzer</h1>
@@ -97,15 +98,16 @@ export default function Home() {
 
       {analysisState === 'idle' && (
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-[40px] flex-row">
+          <div className="flex flex-col md:flex-row gap-[40px] flex-row ">
             {renderUploadCard('Upload Pitch Video', <Video className="h-6 w-6" />, setVideo, 'video/*')}
             {renderUploadCard('Upload Pitch Deck (PDF)', <FileText className="h-6 w-6" />, setDeck, '.pdf')}
+
           </div>
 
           <div className="mt-8 text-center">
             <button
               onClick={handleUpload}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 transition"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-[100px] text-lg hover:bg-blue-700 transition mt-[25px] cursor-pointer p-[10px] px-[30px] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <UploadCloud className="h-5 w-5" />
               Analyze Pitch
