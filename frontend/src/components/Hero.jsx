@@ -7,15 +7,15 @@ import { GridLines } from '../../public/icons/icon';
 
 export default function Hero() {
   return (
-    <div className="flex flex-row w-full h-[90vh] items-center justify-center gap-24 relative">
+    <div className="flex flex-row w-full h-[90vh] items-center justify-center gap-[px] relative">
       <span className="gradient_cloud" />
       <GridLines className="absolute top-[14%] right-[14%] w-1/3 aspect-square z-10" />
 
-      <div className="flex flex-col w-1/2 h-full justify-center pl-24 gap-8">
+      <div className="flex flex-col w-[50%] h-full justify-center pl-[32px] gap-[5px]">
         <h1 className="text-[48px] text-[#DDDDDD] font-serif font-bold w-3/4 leading-tight drop-shadow-[0_1px_1px_#FF00BF]">
           Level up your presentation with AI feedback
         </h1>
-        <p className="text-[24px] w-full italic font-extralight tracking-wider">
+        <p className="text-[30px] w-full italic font-extralight tracking-wider">
           Get real-time insights on your tone, <br /> body language, clarity, and slides.
         </p>
         <div

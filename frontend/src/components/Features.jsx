@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-
-
 export default function Features() {
   const features = [
     {
@@ -32,15 +30,26 @@ export default function Features() {
       <div className="features-container">
         {features.map((f, index) => (
           <div key={index} className="feature-card">
-            <Image src={f.icon} alt="icon" width={56} height={56} className="feature-icon" />
-            <h3 className="feature-title">{f.title}</h3>
-            <p className="feature-desc">{f.desc}</p>
+            <Image
+              src={f.icon}
+              alt="icon"
+              width={56}
+              height={56}
+              className="feature-icon"
+            />
+            <h3 className="font-[serif] font-bold text-[23px] mb-2 text-center">
+              {f.title}
+            </h3>
+            <p className="italic font-extralight text-[16px] text-center">
+              {f.desc}
+            </p>
           </div>
         ))}
       </div>
     </section>
   );
 }
+
 
 
 
