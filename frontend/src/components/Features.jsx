@@ -1,4 +1,6 @@
-import Image from "next/image"; 
+import Image from "next/image";
+
+
 
 export default function Features() {
   const features = [
@@ -25,27 +27,21 @@ export default function Features() {
   ];
 
   return (
-    <section className="bg-[#100425] py-20 min-h-screen" id="features">
-      <h2 className="text-white text-6xl font-serif text-center mb-25">Features</h2>
-      <div className="flex justify-center gap-6 px-4 flex-wrap">
+    <section className="features-section" id="features">
+      <h2 className="features-title">Features</h2>
+      <div className="features-container">
         {features.map((f, index) => (
-          <div
-            key={index}
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(70, 0, 70, 0.98) 0%, rgba(0, 60, 60, 0.98) 100%)",
-            }}
-            className="text-white rounded-xl w-70 h-84 p-6 text-center flex flex-col items-center"
-          >
-            <Image src={f.icon} alt="icon" width={56} height={56} className="mb-4" />
-            <h3 className="font-serif font-bold text-xl mb-2">{f.title}</h3>
-            <p className="italic font-extralight text-sm">{f.desc}</p>
+          <div key={index} className="feature-card">
+            <Image src={f.icon} alt="icon" width={56} height={56} className="feature-icon" />
+            <h3 className="feature-title">{f.title}</h3>
+            <p className="feature-desc">{f.desc}</p>
           </div>
         ))}
       </div>
     </section>
   );
 }
+
 
 
 
