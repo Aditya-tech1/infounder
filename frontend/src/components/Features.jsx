@@ -30,13 +30,13 @@ export default function Features() {
       <div className="features-container">
         {features.map((f, index) => (
           <div key={index} className="feature-card">
-            <Image
-              src={f.icon}
-              alt="icon"
-              width={56}
-              height={56}
-              className="feature-icon"
-            />
+          <Image
+         src={f.icon}
+        alt="icon"
+        width={60}
+        height={1}
+        className="feature-icon h-[72px] w-[60px]"
+          />
             <h3 className="font-[serif] font-bold text-[24px] mb-2 text-center">
               {f.title}
             </h3>
@@ -49,6 +49,7 @@ export default function Features() {
     </section>
   );
 }
+
 
 
 
