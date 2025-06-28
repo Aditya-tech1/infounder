@@ -7,11 +7,11 @@ import { GridLines } from '../../public/icons/icon';
 
 export default function Hero() {
   return (
-    <div className="flex flex-row w-full h-[90vh] items-center justify-center gap-[px] relative">
+    <div className="flex flex-row w-[100%] h-[90vh] items-center justify-center gap-[8px] relative">
       <span className="gradient_cloud" />
-      <GridLines className="absolute top-[14%] right-[14%] w-1/3 aspect-square z-10" />
+      <GridLines className="absolute top-[0%] right-[15%] w-1/3 aspect-square z-10" />
 
-      <div className="flex flex-col w-[50%] h-full justify-center pl-[32px] gap-[5px]">
+      <div className="flex flex-col w-[50%] h-[100%] justify-center pl-[35px] gap-[12px]">
         <h1 className="text-[48px] text-[#DDDDDD] font-serif font-bold w-3/4 leading-tight drop-shadow-[0_1px_1px_#FF00BF]">
           Level up your presentation with AI feedback
         </h1>
@@ -27,20 +27,20 @@ export default function Hero() {
         >
           <Link
             href="/upload"
-            className="font-bold text-[24px] text-[#ffffff] p-4 px-[20px] border-white w-fit rounded-full drop-shadow-sm"
+            className="font-bold text-[24px] text-[#ffffff] p-[16px] px-[32px] border-white w-fit rounded-full drop-shadow-md  no-underline"
           >
             Try Free Demo
           </Link>
         </div>
       </div>
 
-      <div className="h-full w-1/2">
+      <div className="h-[100%] w-[50%] relative">
         <Image
           src="/man.png"
           alt="pink man image"
           width={1920}
           height={1920}
-          className="h-full w-auto relative -right-16 z-10"
+          className="h-[100%] w-auto relative -right-[15%] z-10"
         />
       </div>
     </div>

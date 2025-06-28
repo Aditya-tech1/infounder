@@ -26,6 +26,7 @@ export const analyzePitch = async (files) => {
 export const checkAnalysisStatus = async (jobId) => {
   try {
     const response = await fetch(`${API_URL}/api/status/${jobId}`);
+    // console.log(response);
     
     if (!response.ok) {
       const errorData = await response.json();

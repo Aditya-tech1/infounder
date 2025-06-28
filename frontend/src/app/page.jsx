@@ -57,6 +57,7 @@ export default function Home() {
         } else if (status === 'completed') {
           setAnalysisState('completed');
           setResults(response.results);
+          console.log(response.results);
           return;
         } else {
           setAnalysisState('error');

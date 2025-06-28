@@ -37,7 +37,7 @@ export default function Features() {
               height={56}
               className="feature-icon"
             />
-            <h3 className="font-[serif] font-bold text-[23px] mb-2 text-center">
+            <h3 className="font-[serif] font-bold text-[24px] mb-2 text-center">
               {f.title}
             </h3>
             <p className="italic font-extralight text-[16px] text-center">
