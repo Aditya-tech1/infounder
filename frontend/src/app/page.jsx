@@ -71,7 +71,7 @@ export default function Home() {
   };
 
   const renderUploadCard = (label, icon, onFileSelect, acceptedTypes) => (
-    <div className="flex-1 bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:border-blue-400 transition duration-200">
+    <div className="bg-[#ffff00] shadow-md rounded-lg p-6 flex flex-col items-center">
       <div className="flex items-center space-x-3 mb-4 text-blue-600">
         {icon}
         <h3 className="text-lg font-semibold">{label}</h3>
