@@ -86,7 +86,12 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-50 to-white ">
+    <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-100 via-white to-blue-50">
+      {/* ✅ Tailwind CSS working test */}
+      <div className="p-4 mb-6 bg-green-100 text-green-800 text-center rounded-lg font-medium shadow">
+        ✅ Tailwind CSS is working!
+      </div>
+
       <div className="text-center mb-12">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-400">AI-Powered Pitch Analyzer</h1>
         <p className="mt-4 text-lg text-gray-600">Upload your pitch video and deck to receive instant, AI-based feedback</p>
@@ -116,9 +121,9 @@ export default function Home() {
       {analysisState === 'completed' && results && <ResultsDisplay results={results} />}
 
       {analysisState === 'error' && (
-        <div className=" mx-auto mt-10 bg-white border border-red-300 text-center rounded-xl p-8 shadow-lg">
+        <div className="mx-auto mt-10 bg-white border border-red-300 text-center rounded-xl p-8 shadow-lg max-w-xl">
           <div className="text-red-500 mb-3">
-              <WarningIcon className="mx-auto h-8 w-8 text-red-500" />
+            <WarningIcon className="mx-auto h-8 w-8 text-red-500" />
           </div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Analysis Failed</h2>
           <p className="text-gray-600">{statusMessage || 'Something went wrong during analysis.'}</p>
