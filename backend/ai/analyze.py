@@ -7,16 +7,8 @@ from deck_analysis import analyze_deck
 
 
 
-
-
-import sys
-import json
-import time
-
-
-import numpy as np
-print("NUMPY VERSION:", np._version_)
-print("NUMPY LOADED FROM:", np._file_)  
+print("NUMPY LOADED FROM:", np.__file__)
+#print("NUMPY LOADED FROM:", np._file_)  
 
 from video_analysis import analyze_video
 from deck_analysis import analyze_deck
@@ -71,5 +63,6 @@ def main():
         log_progress(100, "Analysis failed")
         sys.exit(1)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
+
