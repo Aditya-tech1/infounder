@@ -1,0 +1,126 @@
+import pdfplumber
+import numpy as np
+import cv2
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Best practice pitch deck elements
+BEST_PRACTICES = [
+    "problem", "solution", "market size", "business model", 
+    "product", "traction", "team", "competition", "financials",
+    "ask"
+]
+
+def extract_slide_images(pdf_path):
+    """Convert PDF pages to images for visual analysis"""
+    images = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for i, page in enumerate(pdf.pages):
+            im = page.to_image(resolution=150)
+            img_array = np.array(im.original)
+            images.append(img_array)
+    return images
+
+def analyze_design(images):
+    """Evaluate slide design quality"""
+    scores = []
+    for img in images:
+        # Convert to grayscale
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # Calculate contrast score
+        contrast = np.std(gray)
+        
+        # Edge detection for layout analysis
+        edges = cv2.Canny(gray, 100, 200)
+        edge_density = np.sum(edges) / (edges.shape[0] * edges.shape[1])
+        
+        # Colorfulness (for color slides)
+        if len(img.shape) == 3:  # Color image
+            lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+            a, b = lab[:,:,1], lab[:,:,2]
+            colorfulness = np.sqrt(np.mean(a*2) + np.mean(b*2))
+        else:
+            colorfulness = 0
+        
+        # Combine metrics
+        score = (
+            min(contrast/50, 1) * 0.4 + 
+            min(edge_density*100, 1) * 0.3 + 
+            min(colorfulness/30, 1) * 0.3
+        )
+        scores.append(score)
+    
+    return np.mean(scores)
+
+def analyze_content(text):
+    """Evaluate content completeness and quality"""
+    # Check for required sections
+    missing_sections = []
+    feedback = []
+    recommendations = []
+    
+    lower_text = text.lower()
+    present_sections = []
+    
+    for section in BEST_PRACTICES:
+        if re.search(r'\b' + re.escape(section) + r'\b', lower_text):
+            present_sections.append(section)
+            feedback.append({"message": f"Found '{section}' section", "sentiment": "positive"})
+        else:
+            missing_sections.append(section)
+            feedback.append({"message": f"Missing '{section}' section", "sentiment": "negative"})
+            recommendations.append(f"Add a section about '{section}'")
+    
+    # Content similarity score
+    vectorizer = TfidfVectorizer()
+    vectors = vectorizer.fit_transform([" ".join(BEST_PRACTICES), text])
+    similarity = cosine_similarity(vectors[0], vectors[1])[0][0]
+    
+    # Slide count analysis
+    slide_count = len(text.split('\f'))  # Pages separated by form feed
+    if slide_count < 10:
+        feedback.append({
+            "message": f"Only {slide_count} slides - consider adding more content", 
+            "sentiment": "negative"
+        })
+    elif slide_count > 20:
+        feedback.append({
+            "message": f"{slide_count} slides is too many - simplify your presentation", 
+            "sentiment": "negative"
+        })
+    else:
+        feedback.append({
+            "message": f"Good slide count ({slide_count})", 
+            "sentiment": "positive"
+        })
+    
+    return {
+        "contentScore": similarity,
+        "presentSections": present_sections,
+        "missingSections": missing_sections,
+        "feedback": feedback,
+        "recommendations": recommendations
+    }
+
+def analyze_deck(deck_path):
+    # Extract text
+    full_text = ""
+    with pdfplumber.open(deck_path) as pdf:
+        for page in pdf.pages:
+            full_text += page.extract_text() + "\f"  # Form feed for page breaks
+    
+    # Analyze content
+    content_results = analyze_content(full_text)
+    
+    # Analyze design
+    slide_images = extract_slide_images(deck_path)
+    design_score = analyze_design(slide_images)
+    
+    # Combine results
+    return {
+        "designScore": design_score * 10,  # Scale to 1-10
+        "feedback": content_results["feedback"],
+        "recommendations": content_results["recommendations"]
+    }

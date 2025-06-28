@@ -1,0 +1,9 @@
+mediapipe
+deepface
+opencv-python
+scikit-learn
+pdfplumber
+pyaudioanalysis
+scipy
+pyffmpeg
+numpy>=1.24
