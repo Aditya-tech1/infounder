@@ -17,12 +17,12 @@ export default function Features() {
     {
       icon: "/ppt.png",
       title: "Smart Slide Deck Suggestions",
-      desc: "Improve your presentation slides with AI-driven advice Improve your presentation slides with AI-driven advice Improve your presentation slides with AI-driven advice",
+      desc: "Improve your presentation slides with AI-driven advice",
     },
     {
       icon: "/file.png",
       title: "Personalized Improvement Report",
-      desc: "Gain actionable insights tailored to your performance Gain actionable insights tailored to your performance Gain actionable insights tailored to your performance",
+      desc: "Gain actionable insights tailored to your performance",
     },
   ];
 

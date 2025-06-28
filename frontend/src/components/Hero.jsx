@@ -12,10 +12,10 @@ export default function Hero() {
       <GridLines className="absolute top-[14%] right-[14%] w-1/3 aspect-square z-10" />
 
       <div className="flex flex-col w-1/2 h-full justify-center pl-24 gap-8">
-        <h1 className="text-5xl text-[#DDDDDD] font-serif font-bold w-3/4 leading-tight drop-shadow-[0_1px_1px_#FF00BF]">
+        <h1 className="text-[48px] text-[#DDDDDD] font-serif font-bold w-3/4 leading-tight drop-shadow-[0_1px_1px_#FF00BF]">
           Level up your presentation with AI feedback
         </h1>
-        <p className="text-2xl w-full italic font-extralight tracking-wider">
+        <p className="text-[24px] w-full italic font-extralight tracking-wider">
           Get real-time insights on your tone, <br /> body language, clarity, and slides.
         </p>
         <div
@@ -27,7 +27,7 @@ export default function Hero() {
         >
           <Link
             href="/upload"
-            className="font-bold text-2xl p-4 px-10 border-white w-fit rounded-full drop-shadow-sm"
+            className="font-bold text-[24px] text-[#ffffff] p-4 px-[20px] border-white w-fit rounded-full drop-shadow-sm"
           >
             Try Free Demo
           </Link>
@@ -46,4 +46,5 @@ export default function Hero() {
     </div>
   );
 }
+
 
