@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const AnalysisJob = require('../models/AnalysisJob');
 
-const PYTHON_CMD = 'C:\\Python312\\python.exe'
+const PYTHON_CMD = 'C:\\Users\\AKANKSHA\\anaconda3\\python.exe';
 
 const tmpDir = path.join(__dirname, '../../tmp');
 if (!fs.existsSync(tmpDir)) {
@@ -13,6 +13,7 @@ if (!fs.existsSync(tmpDir)) {
 
 const progressTracker = {};
 
+// ✅ Helper to safely extract final JSON from stdout
 function extractJSON(stdout) {
   try {
     const jsonStart = stdout.lastIndexOf('{');
@@ -27,6 +28,7 @@ function extractJSON(stdout) {
   }
 }
 
+// ✅ Main job handler
 exports.addToQueue = async (jobData) => {
   try {
     progressTracker[jobData.jobId] = {
@@ -59,7 +61,7 @@ exports.addToQueue = async (jobData) => {
       {
         env: {
           ...process.env,
-          PYTHONPATH: "python"
+          PYTHONPATH: 'C:\\Users\\AKANKSHA\\anaconda3\\Lib\\site-packages'
         }
       },
       async (error, stdout, stderr) => {
@@ -114,6 +116,7 @@ exports.addToQueue = async (jobData) => {
       }
     );
 
+    // Live progress
     pythonProcess.stdout.on('data', async (data) => {
       console.log(`[Python] ${data}`);
 
@@ -159,6 +162,7 @@ exports.addToQueue = async (jobData) => {
   }
 };
 
+// ✅ Progress tracking (external call)
 exports.getJobProgress = (jobId) => {
   return progressTracker[jobId] || {
     status: 'unknown',
@@ -167,6 +171,7 @@ exports.getJobProgress = (jobId) => {
   };
 };
 
+// ✅ Helper: download file to temp directory
 async function downloadFile(url, type) {
   const response = await axios({
     url,
