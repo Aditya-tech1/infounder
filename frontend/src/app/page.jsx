@@ -86,7 +86,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-50 to-white ">
       <div className="text-center mb-12">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800">AI-Powered Pitch Analyzer</h1>
         <p className="mt-4 text-lg text-gray-600">Upload your pitch video and deck to receive instant, AI-based feedback</p>
