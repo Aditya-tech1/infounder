@@ -71,7 +71,7 @@ export default function Home() {
   };
 
   const renderUploadCard = (label, icon, onFileSelect, acceptedTypes) => (
-    <div className="bg-[#ffff00] shadow-md rounded-lg p-6 flex flex-col items-center">
+    <div className="bg-[#00000000] border h-[15rem] shadow-md rounded-lg p-6 flex flex-col gap-[20px] w-[40%] m-auto items-center">
       <div className="flex items-center space-x-3 mb-4 text-blue-600">
         {icon}
         <h3 className="text-lg font-semibold">{label}</h3>
@@ -88,9 +88,7 @@ export default function Home() {
   return (
     <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-100 via-white to-blue-50">
       {/* ✅ Tailwind CSS working test */}
-      <div className="p-4 mb-6 bg-green-100 text-green-800 text-center rounded-lg font-medium shadow">
-        ✅ Tailwind CSS is working!
-      </div>
+      
 
       <div className="text-center mb-12">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-400">AI-Powered Pitch Analyzer</h1>
@@ -99,7 +97,7 @@ export default function Home() {
 
       {analysisState === 'idle' && (
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col md:flex-row gap-[40px] flex-row">
             {renderUploadCard('Upload Pitch Video', <Video className="h-6 w-6" />, setVideo, 'video/*')}
             {renderUploadCard('Upload Pitch Deck (PDF)', <FileText className="h-6 w-6" />, setDeck, '.pdf')}
           </div>
@@ -123,7 +121,7 @@ export default function Home() {
       {analysisState === 'error' && (
         <div className="mx-auto mt-10 bg-white border border-red-300 text-center rounded-xl p-8 shadow-lg max-w-xl">
           <div className="text-red-500 mb-3">
-            <WarningIcon className="mx-auto h-8 w-8 text-red-500" />
+            <WarningIcon className="mx-auto h-[50px] aspect-square text-red-500" />
           </div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Analysis Failed</h2>
           <p className="text-gray-600">{statusMessage || 'Something went wrong during analysis.'}</p>

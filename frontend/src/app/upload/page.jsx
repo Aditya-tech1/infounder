@@ -1,6 +1,6 @@
 'use client';
 // pages/_app.js
-import '@/styles/globals.css'; // preferred absolute import
+import '../globals.css'; // preferred absolute import
 
 
 
