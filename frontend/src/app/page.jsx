@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import AnalysisProgress from './components/AnalysisProgress';
-import ResultsDisplay from './components/ResultsDisplay';
+import AnalysisProgress from '../components/AnalysisProgress';
+import ResultsDisplay from '../components/ResultsDisplay';
 import { analyzePitch, checkAnalysisStatus } from '../lib/api';
 import { UploadCloud, FileText, Video } from 'lucide-react';
-import { WarningIcon } from '../../public/icons';
+import { WarningIcon } from '../../public/icons/icon';
 
 export default function Home() {
   const [video, setVideo] = useState(null);
