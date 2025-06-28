@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require('uuid'); // Add this import at the top
+const { v4: uuidv4 } = require('uuid'); 
 const AnalysisJob = require('../models/AnalysisJob');
 const { uploadToSupabase } = require('../services/storage');
 const { addToQueue } = require('../services/queue');
@@ -7,7 +7,6 @@ exports.analyzePitch = async (req, res) => {
   try {
     console.log('Starting analysis process...');
     
-    // Enhanced validation
     if (!req.files) {
       console.error('No files in request');
       return res.status(400).json({ error: 'No files uploaded' });
@@ -29,7 +28,6 @@ exports.analyzePitch = async (req, res) => {
     console.log(`Video file: ${videoFile.originalname} (${videoFile.size} bytes)`);
     console.log(`Deck file: ${deckFile.originalname} (${deckFile.size} bytes)`);
     
-    // Validate file types
     if (!videoFile.mimetype.startsWith('video/')) {
       console.error(`Invalid video type: ${videoFile.mimetype}`);
       return res.status(400).json({ error: 'Invalid video file type' });
@@ -40,10 +38,9 @@ exports.analyzePitch = async (req, res) => {
       return res.status(400).json({ error: 'Invalid deck file type' });
     }
 
-    const jobId = uuidv4(); // Now properly defined
+    const jobId = uuidv4(); 
     console.log(`Creating job: ${jobId}`);
     
-    // Upload files to Supabase
     console.log('Uploading to Supabase...');
     const videoUrl = await uploadToSupabase(videoFile);
     const deckUrl = await uploadToSupabase(deckFile);
@@ -51,7 +48,6 @@ exports.analyzePitch = async (req, res) => {
     console.log(`Video URL: ${videoUrl}`);
     console.log(`Deck URL: ${deckUrl}`);
     
-    // Create new analysis job
     const newJob = new AnalysisJob({
       jobId,
       status: 'processing',
@@ -63,7 +59,6 @@ exports.analyzePitch = async (req, res) => {
     await newJob.save();
     console.log('Job saved to database');
     
-    // Add to processing queue
     await addToQueue({
       jobId,
       videoUrl,

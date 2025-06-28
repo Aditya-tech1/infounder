@@ -1,10 +1,8 @@
 module.exports = (req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     
-    // Log headers
     console.log('Headers:', req.headers);
     
-    // Log files if present
     if (req.files) {
       console.log('Files:');
       Object.keys(req.files).forEach(key => {
@@ -20,7 +18,6 @@ module.exports = (req, res, next) => {
       console.log('No files in request');
     }
     
-    // Safely log body
     if (req.body && typeof req.body === 'object' && Object.keys(req.body).length > 0) {
       console.log('Body:', req.body);
     } else {
