@@ -13,10 +13,10 @@ import sys
 import json
 import time
 
-# Diagnostic imports
+
 import numpy as np
 print("NUMPY VERSION:", np._version_)
-print("NUMPY LOADED FROM:", np._file_)  # 👈 Add this line
+print("NUMPY LOADED FROM:", np._file_)  
 
 from video_analysis import analyze_video
 from deck_analysis import analyze_deck
@@ -45,15 +45,12 @@ def main():
         start_time = time.time()
         log_progress(10, "Initializing analysis...")
         
-        # Analyze video
         log_progress(20, "Processing video...")
         video_results = analyze_video(video_path)
         
-        # Analyze deck
         log_progress(50, "Processing deck...")
         deck_results = analyze_deck(deck_path)
         
-        # Generate combined results
         log_progress(80, "Generating report...")
         overall_score = (video_results["confidenceScore"] * 0.7 + deck_results["designScore"] * 0.3)
         
@@ -65,7 +62,6 @@ def main():
             "recommendations": deck_results["recommendations"] + video_results["recommendations"]
         }
         
-        # Finalize
         duration = time.time() - start_time
         log_progress(100, f"Analysis completed in {duration:.1f} seconds")
         print(json.dumps(results))
