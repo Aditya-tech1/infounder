@@ -1,103 +1,140 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import AnalysisProgress from './components/AnalysisProgress';
+import ResultsDisplay from './components/ResultsDisplay';
+import { analyzePitch, checkAnalysisStatus } from '../lib/api';
+import { UploadCloud, FileText, Video } from 'lucide-react';
+import { WarningIcon } from '../../public/icons';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [video, setVideo] = useState(null);
+  const [deck, setDeck] = useState(null);
+  const [analysisState, setAnalysisState] = useState('idle');
+  const [results, setResults] = useState(null);
+  const [jobId, setJobId] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleUpload = async () => {
+    if (!video || !deck) {
+      setStatusMessage('Please upload both a video and a pitch deck.');
+      setAnalysisState('error');
+      return;
+    }
+
+    try {
+      setAnalysisState('processing');
+      setStatusMessage('Uploading files...');
+
+      const response = await analyzePitch({ video, deck });
+
+      if (response.jobId) {
+        setJobId(response.jobId);
+        pollAnalysisStatus(response.jobId);
+      } else {
+        setAnalysisState('error');
+        setStatusMessage('Failed to start analysis.');
+      }
+    } catch (error) {
+      console.error(error);
+      setAnalysisState('error');
+      setStatusMessage(error.message || 'Analysis failed.');
+    }
+  };
+
+  const pollAnalysisStatus = async (jobId) => {
+    try {
+      setStatusMessage('Processing video...');
+      let status = 'processing';
+
+      while (status === 'processing') {
+        const response = await checkAnalysisStatus(jobId);
+        status = response.status;
+
+        if (status === 'processing') {
+          setStatusMessage(response.message || 'Analyzing...');
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        } else if (status === 'completed') {
+          setAnalysisState('completed');
+          setResults(response.results);
+          return;
+        } else {
+          setAnalysisState('error');
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setAnalysisState('error');
+      setStatusMessage('Failed to check status.');
+    }
+  };
+
+  const renderUploadCard = (label, icon, onFileSelect, acceptedTypes) => (
+    <div className="flex-1 bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:border-blue-400 transition duration-200">
+      <div className="flex items-center space-x-3 mb-4 text-blue-600">
+        {icon}
+        <h3 className="text-lg font-semibold">{label}</h3>
+      </div>
+      <input
+        type="file"
+        accept={acceptedTypes}
+        onChange={(e) => onFileSelect(e.target.files[0])}
+        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+      />
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen py-12 px-6 bg-gradient-to-br from-blue-50 to-white">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800">AI-Powered Pitch Analyzer</h1>
+        <p className="mt-4 text-lg text-gray-600">Upload your pitch video and deck to receive instant, AI-based feedback</p>
+      </div>
+
+      {analysisState === 'idle' && (
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-6">
+            {renderUploadCard('Upload Pitch Video', <Video className="h-6 w-6" />, setVideo, 'video/*')}
+            {renderUploadCard('Upload Pitch Deck (PDF)', <FileText className="h-6 w-6" />, setDeck, '.pdf')}
+          </div>
+
+          <div className="mt-8 text-center">
+            <button
+              onClick={handleUpload}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 transition"
+            >
+              <UploadCloud className="h-5 w-5" />
+              Analyze Pitch
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+
+      {analysisState === 'processing' && <AnalysisProgress status={statusMessage} />}
+
+      {analysisState === 'completed' && results && <ResultsDisplay results={results} />}
+
+      {analysisState === 'error' && (
+        <div className=" mx-auto mt-10 bg-white border border-red-300 text-center rounded-xl p-8 shadow-lg">
+          <div className="text-red-500 mb-3">
+              <WarningIcon className="mx-auto h-8 w-8 text-red-500" />
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Analysis Failed</h2>
+          <p className="text-gray-600">{statusMessage || 'Something went wrong during analysis.'}</p>
+          <button
+            onClick={() => {
+              setAnalysisState('idle');
+              setVideo(null);
+              setDeck(null);
+              setStatusMessage('');
+            }}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      )}
     </div>
   );
 }
