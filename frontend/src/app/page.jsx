@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import AnalysisProgress from './components/AnalysisProgress';
-import ResultsDisplay from './components/ResultsDisplay';
+import AnalysisProgress from '../components/AnalysisProgress';
+import ResultsDisplay from '../components/ResultsDisplay';
 import { analyzePitch, checkAnalysisStatus } from '../lib/api';
 import { UploadCloud, FileText, Video } from 'lucide-react';
-import { WarningIcon } from '../../public/icons';
+import { WarningIcon } from '../../public/icons/icon';
 
 export default function Home() {
   const [video, setVideo] = useState(null);
@@ -71,7 +71,7 @@ export default function Home() {
   };
 
   const renderUploadCard = (label, icon, onFileSelect, acceptedTypes) => (
-    <div className="flex-1 bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:border-blue-400 transition duration-200">
+    <div className="bg-[#ffff00] shadow-md rounded-lg p-6 flex flex-col items-center">
       <div className="flex items-center space-x-3 mb-4 text-blue-600">
         {icon}
         <h3 className="text-lg font-semibold">{label}</h3>
@@ -93,10 +93,8 @@ export default function Home() {
       </div>
 
       <div className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800">AI-Powered Pitch Analyzer</h1>
-        <p className="mt-4 text-lg text-gray-600">
-          Upload your pitch video and deck to receive instant, AI-based feedback
-        </p>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-400">AI-Powered Pitch Analyzer</h1>
+        <p className="mt-4 text-lg text-gray-600">Upload your pitch video and deck to receive instant, AI-based feedback</p>
       </div>
 
       {analysisState === 'idle' && (

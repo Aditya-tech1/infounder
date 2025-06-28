@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const AnalysisJob = require('../models/AnalysisJob');
 
-const PYTHON_CMD = 'C:\\Users\\AKANKSHA\\anaconda3\\python.exe';
+const PYTHON_CMD = 'C:\\Python312\\python.exe'
 
 const tmpDir = path.join(__dirname, '../../tmp');
 if (!fs.existsSync(tmpDir)) {
@@ -59,7 +59,7 @@ exports.addToQueue = async (jobData) => {
       {
         env: {
           ...process.env,
-          PYTHONPATH: 'C:\\Users\\AKANKSHA\\anaconda3\\Lib\\site-packages'
+          PYTHONPATH: "python"
         }
       },
       async (error, stdout, stderr) => {
