@@ -58,6 +58,7 @@ def main():
         log_progress(100, f"Analysis completed in {duration:.1f} seconds")
         print(json.dumps(results))
         
+        
     except Exception as e:
         print(f"Analysis failed: {str(e)}")
         log_progress(100, "Analysis failed")

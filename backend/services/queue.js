@@ -13,17 +13,27 @@ if (!fs.existsSync(tmpDir)) {
 
 const progressTracker = {};
 
-// ✅ Helper to safely extract final JSON from stdout
+// ✅ Updated Helper to safely extract final JSON from stdout
 function extractJSON(stdout) {
   try {
-    const jsonStart = stdout.lastIndexOf('{');
-    const jsonEnd = stdout.lastIndexOf('}') + 1;
-    if (jsonStart === -1 || jsonEnd === -1) {
-      throw new Error('No valid JSON object found in output.');
-    }
-    const jsonString = stdout.slice(jsonStart, jsonEnd);
+    // Find the start of the JSON by looking for the first '{'
+    const startIndex = stdout.indexOf('{');
+    if (startIndex === -1) throw new Error('No JSON found in output');
+
+    // Find the end of the JSON by looking for the last '}'
+    const endIndex = stdout.lastIndexOf('}');
+    if (endIndex === -1) throw new Error('No closing brace found in output');
+    if (endIndex < startIndex) throw new Error('Invalid JSON structure');
+
+    // Extract the JSON portion
+    const jsonString = stdout.substring(startIndex, endIndex + 1);
+
+    // Try to parse the JSON
     return JSON.parse(jsonString);
   } catch (e) {
+    // Improved error logging for debugging
+    console.error('JSON Extraction Error:', e.message);
+    console.log('Problematic Content:', stdout);
     throw new Error(`JSON extraction failed: ${e.message}`);
   }
 }
@@ -61,7 +71,8 @@ exports.addToQueue = async (jobData) => {
       {
         env: {
           ...process.env,
-          PYTHONPATH: 'C:\\Users\\AKANKSHA\\anaconda3\\Lib\\site-packages'
+          PYTHONPATH: 'C:\\Users\\AKANKSHA\\anaconda3\\Lib\\site-packages',
+          TF_ENABLE_ONEDNN_OPTS: '0'
         }
       },
       async (error, stdout, stderr) => {
@@ -88,8 +99,10 @@ exports.addToQueue = async (jobData) => {
 
         try {
           console.log('Raw stdout:', stdout);
-          const result = extractJSON(stdout);
+          let result = extractJSON(stdout);
+          console.log('Parsed result:', result);
 
+          
           await AnalysisJob.updateOne(
             { jobId: jobData.jobId },
             {
@@ -107,7 +120,7 @@ exports.addToQueue = async (jobData) => {
             { jobId: jobData.jobId },
             {
               status: 'failed',
-              message: 'Result processing failed (invalid JSON)',
+              message: parseError.message || 'Failed to parse analysis result',
               progress: 100,
               error: parseError.message
             }
@@ -116,7 +129,7 @@ exports.addToQueue = async (jobData) => {
       }
     );
 
-    // Live progress
+    // ✅ Live progress tracking
     pythonProcess.stdout.on('data', async (data) => {
       console.log(`[Python] ${data}`);
 
@@ -162,7 +175,7 @@ exports.addToQueue = async (jobData) => {
   }
 };
 
-// ✅ Progress tracking (external call)
+// ✅ Progress tracking endpoint
 exports.getJobProgress = (jobId) => {
   return progressTracker[jobId] || {
     status: 'unknown',
