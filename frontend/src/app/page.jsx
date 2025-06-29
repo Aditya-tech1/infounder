@@ -64,9 +64,9 @@ export default function Home() {
         console.log(`Polling... Status: ${status}`);
 
         if (status === 'completed') {
-          // onComplete(response.result);
-          console.log(response.result)
-          document.writeln('Analysis completed successfully' , response.result);
+          onComplete(response.result);
+          // console.log(response.result)
+          // document.writeln('Analysis completed successfully' , response.result);
           setResults(response.results);
           setAnalysisState('completed');
           break;
