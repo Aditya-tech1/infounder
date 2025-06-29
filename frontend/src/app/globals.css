@@ -95,6 +95,23 @@ body {
 /* globals.css */
 
 
-
+/* Aurora Background Animation */
+@keyframes move-aurora {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.2);
+  }
+  25% {
+    transform: translate(-45%, -55%) rotate(90deg) scale(1.4);
+  }
+  50% {
+    transform: translate(-55%, -45%) rotate(180deg) scale(1.2);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(270deg) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1.2);
+  }
+}
 
 

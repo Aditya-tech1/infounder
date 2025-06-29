@@ -1,0 +1,116 @@
+/* src/components/Scorecard.module.css */
+
+/* Import the serif font used in your theme */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500&display=swap');
+
+.scorecardContainer {
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Inter', sans-serif; /* Clean sans-serif for body text */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* Glassmorphism card effect from your theme */
+.card {
+    background: rgba(42, 26, 69, 0.7); /* Semi-transparent dark purple */
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 8px 32px 0 rgba(120, 31, 237, 0.1);
+}
+
+.cardTitle {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #ffffff;
+    font-family: 'Playfair Display', serif; /* Elegant serif for titles */
+    display: flex;
+    align-items: center;
+}
+
+.cardTitle svg {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+}
+
+/* Score Items */
+.scoreItem {
+    text-align: center;
+}
+
+.scoreGauge {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: auto;
+}
+.scoreGauge svg { transform: rotate(-90deg); }
+.scoreGaugeBg { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 12; }
+.scoreGaugeFg {
+    fill: none;
+    stroke: #00f2ea; /* Bright cyan from your button gradient */
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 339.292;
+    transition: stroke-dashoffset 0.8s ease-out;
+}
+.scoreText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+.scoreText span { font-weight: 500; opacity: 0.7; }
+
+.confidenceDisplay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #2ecc71; /* Bright green from 'How We Work' */
+}
+
+/* Feedback & Recommendation Lists */
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.listItem {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #e5e7eb; /* Off-white for readability */
+}
+.listItem svg {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* Use vibrant colors from your theme */
+.positive svg { color: #2ecc71; } /* Green */
+.neutral svg { color: #f9a826; } /* Orange/Yellow */
+.negative svg { color: #ff4d6d; } /* Bright Pink/Red */
+.recommendation svg { color: #00f2ea; } /* Cyan */
